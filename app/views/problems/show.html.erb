@@ -1,0 +1,93 @@
+<!-- DETAILS -->
+<%= link_to 'Back', solver_path %>
+
+<p>
+  <strong>Title:</strong>
+  <%= @problem.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @problem.description %>
+</p>
+<!-- DETAILS ENDS -->
+
+
+<!-- CRITERIA -->
+
+<table>
+
+  <%= form_for(@criteria.new, remote: true) do |form| %>
+
+    <div class="field">
+      <%= form.label :title, "For me to participate in a plan that addresses this issue, the following must be true" %>
+      <%= form.text_area :title, id: :criterium_title %>
+    </div>
+
+    <%= form.hidden_field :problem_id, id: :id %>
+
+    <div class="actions">
+      <%= form.submit "Add to criteria" %>
+    </div>
+  <% end %>
+
+  <tbody>
+    <% @criteria.each do |criterium| %>
+      <% if criterium.title %>
+        <tr>
+          <td><hr></td>
+        </tr>
+        <tr>
+          <td><%= criterium.title %></td>
+          <td><%= criterium.alternatives %></td>
+        </tr>
+        <tr>
+          <td><%= criterium.user.count %></td>
+          <%if criterium.user.include?(@user)%>
+            <td><%= link_to "Unsponsor", unsponsor_criteria_path(:criterium_id => criterium.id), :method => "post" %></td>
+          <%else%>
+            <td><%= link_to "This is important to me (sponsor)", sponsor_criteria_path(:criterium_id => criterium.id), :method => "post" %></td>
+          <%end%>
+        </tr>
+        <tr>
+          <td><%= criterium.cridissent.count %></td>
+          <%if criterium.cridissent.find_by(user: @user)%>
+            <td><%= link_to "don't dissent", assent_criteria_path(:criterium_id => criterium.id), :method => "post" %></td>
+          <%else%>
+            <td><%= link_to "I cannot support a plan where this is true (dissent)", dissent_criteria_path(:criterium_id => criterium.id), :method => "post" %></td>
+          <%end%>
+        </tr>
+      <%end%>
+    <% end %>
+  </tbody>
+</table>
+
+
+<br>
+<!-- CRITERIA ENDS -->
+
+
+
+<!-- SOLUTIONS -->
+<h1>Solutions</h1>
+
+<%= link_to 'New Solution', new_solution_path(:problem_id => @problem.id) %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @solutions.each do |solution| %>
+      <tr>
+        <td><%= link_to solution.title, solution_path(:problem_id => solution.problem_id, :solution_id => solution.id)%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<!-- SOLUTIONS ENDS

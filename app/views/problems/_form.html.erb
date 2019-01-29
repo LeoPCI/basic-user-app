@@ -1,0 +1,26 @@
+<%= form_with(model: problem, local: true) do |form| %>
+  <% if problem.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(problem.errors.count, "error") %> prohibited this problem from being saved:</h2>
+
+      <ul>
+      <% problem.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <b> I would like help inventing a plan that will result in </b> <%= form.text_field :title, id: :problem_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description, "Please explain the problem as you see it" %>
+    <%= form.text_area :description, id: :problem_description %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Post to solver" %>
+  </div>
+<% end %>
