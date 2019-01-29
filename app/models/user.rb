@@ -1,8 +1,4 @@
 class User < ApplicationRecord
-  has_and_belongs_to_many :criterium
-  has_and_belongs_to_many :problems
-  has_many :cridissent
-
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save   :downcase_email
   before_create :create_activation_digest
